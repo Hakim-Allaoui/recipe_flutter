@@ -25,12 +25,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
       });
       _isLoading = true;
 
-      try {
+      // try {
         await Provider.of<RecipesProvider>(context, listen: false)
             .fetchAndSetRecipes(context: context);
-      } catch (e) {
-        print('no internet in catch ${e.toString()}');
-      }
+      // } catch (e) {
+      //   print('no internet in catch ${e.toString()}');
+      // }
 
       setState(() {
         _isLoading = false;

@@ -1,45 +1,26 @@
 {
   "project_info": {
-    "project_number": "172957299404",
-    "firebase_url": "https://my-recipes-keeper.firebaseio.com",
-    "project_id": "my-recipes-keeper",
-    "storage_bucket": "my-recipes-keeper.appspot.com"
+    "project_number": "549040988255",
+    "project_id": "recipe-9cf10",
+    "storage_bucket": "recipe-9cf10.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:172957299404:android:16bd47d2120174c7ea0869",
+        "mobilesdk_app_id": "1:549040988255:android:907d192fae6c52ab023bea",
         "android_client_info": {
           "package_name": "com.appstonelab.myrecipes"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "172957299404-aea74n010brahnl8cmtvhd82jfqu6ufu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.appstonelab.myrecipes",
-            "certificate_hash": "63c8fa018330b369de596ee8be566b12c55c17eb"
-          }
-        },
-        {
-          "client_id": "172957299404-tur6frd6p1dfv5no66j25brh1jak80vr.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBTTWbZ9PiBTBDIQlZX2kn9UYMZ7n70qOk"
+          "current_key": "AIzaSyCHwFFFF8jeyJ2_quJuDd1emdwKIqt5U4s"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "172957299404-tur6frd6p1dfv5no66j25brh1jak80vr.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

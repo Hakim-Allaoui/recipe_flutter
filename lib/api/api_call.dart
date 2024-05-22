@@ -38,7 +38,8 @@ class ApiCall {
   //Set True to Use Live URL For Testing...
 
   //Base URL...
-  static String _liveBaseURL = 'http://recipe.appstonelab.com/';
+  // static String _liveBaseURL = 'http://recipe.appstonelab.com/';
+  static String _liveBaseURL = 'https://airfryerrecipes.app/';
 
   //URL Last Component...
   static List<String> _webAPIList = [
@@ -205,7 +206,7 @@ class ApiHelper {
   }
 
   static Future<String> getCurrentUserToken() async {
-    User? user = await FirebaseAuth.instance.currentUser!;
+    User? user = await FirebaseAuth.instance.currentUser;
     if (user != null) {
       //Get ID Token...p
       IdTokenResult idToken = (await user.getIdToken()) as IdTokenResult;

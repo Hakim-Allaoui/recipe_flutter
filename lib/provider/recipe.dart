@@ -37,28 +37,28 @@ class RecipesProvider with ChangeNotifier {
       "category_id": catId != null ? catId : ''
     };
 
-    try {
+    // try {
       final responseData = await ApiCall.callService(
           context: context, webApi: API.Recipe, parameter: parameters);
       List<RecipeItem> recipeItems = recipeFromJson(responseData).data!;
 
       _recipesByCategory = recipeItems;
-        } catch (error) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return CustomDialog(
-            title: error is NoInternetException ? 'No Internet!!!' : 'Error!!!',
-            buttonText: 'Okay',
-            description: error.toString(),
-            alertType: error is NoInternetException
-                ? CustomDialogType.NoInternet
-                : CustomDialogType.Error,
-          );
-        },
-      );
-      throw error;
-    }
+      //   } catch (error) {
+      // showDialog(
+      //   context: context,
+      //   builder: (context) {
+      //     return CustomDialog(
+      //       title: error is NoInternetException ? 'No Internet!!!' : 'Error!!!',
+      //       buttonText: 'Okay',
+      //       description: error.toString(),
+      //       alertType: error is NoInternetException
+      //           ? CustomDialogType.NoInternet
+      //           : CustomDialogType.Error,
+      //     );
+      //   },
+      // );
+      // throw error;
+    // }
 
     notifyListeners();
   }

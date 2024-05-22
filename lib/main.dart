@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'package:provider/provider.dart';
 import 'package:recipe_flutter_provider/provider/theme_provider.dart';
+import 'package:recipe_flutter_provider/utils/tools.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +22,13 @@ import './provider/category.dart';
 import './provider/recipe.dart';
 import './provider/user.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Tools.init();
+
+  MobileAds.instance.initialize();
+
   SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]).then((_) {
     SharedPreferences.getInstance().then((prefs) {

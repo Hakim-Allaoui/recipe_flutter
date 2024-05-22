@@ -37,12 +37,19 @@ dependencies:
   rate_my_app: ^2.1.0
   # firebase_admob: ^0.11.2
 
+  google_mobile_ads: ^5.1.0
+
   flutter_login_facebook: ^2.0.0
 
 # dependency_overrides:
   # flutter_facebook_login: ^3.0.0
 
   # flutter_facebook_login: any
+  firebase_core: ^2.31.1
+  firebase_remote_config: ^4.4.6
+  firebase_analytics: ^10.10.6
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
