@@ -1,5 +1,5 @@
 class StaticString {
-  static const androidAppId = 'com.appstonelab.myrecipes';
+  static const androidAppId = 'com.myrecipes.app';
   static const iosAppId = '1478700049';
 
   static const addMobAndroidAppId = 'ca-app-pub-5756713594973943~5634848759';
@@ -8,6 +8,12 @@ class StaticString {
   static const addMobAndroidBannerUnitId =
       'ca-app-pub-3940256099942544/6300978111';
   static const addMobiOSBannerUnitId = 'ca-app-pub-3940256099942544/2934735716';
+
+  static const addMobAndroidInterUnitId =
+      'ca-app-pub-3940256099942544/1033173712';
+  static const addMobiOSInterUnitId = 'ca-app-pub-3940256099942544/4411468910';
+
+  static int interInterval = 3;
 
   static const String firstName = 'First Name';
   static const String lastName = 'Last Name';
@@ -38,7 +44,7 @@ class StaticString {
   static const String socialLogin = 'Social Login';
 
   //App Title...
-  static const String appTitle = 'My Recipes Keeper';
+  static const String appTitle = 'My Recipes app';
 
   //Recipe...
   static const String recentRecipes = 'Recent Recipes';

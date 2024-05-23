@@ -11,6 +11,9 @@ import '../provider/user.dart';
 import '../constant/shared_preferences_helper.dart';
 import '../provider/auth.dart';
 
+// Edit file to add the ability to call single recipe from notification
+
+
 //API List...
 enum API {
   Recipe,
@@ -23,6 +26,7 @@ enum API {
   UpdateUserDetail,
   DeleteAccount,
   GetSettings,
+  RecipeDetail,
 }
 
 //Request Type...
@@ -53,6 +57,7 @@ class ApiCall {
     'update-user-detail',
     'delete-account',
     'get-setting',
+    'recipe-detail',
   ];
 
   //Get Final URL
@@ -99,6 +104,7 @@ class ApiCall {
       } else if (requestType == HTTPRequestType.DELETE) {
         response = await http.delete(Uri.parse(url), headers: header);
       }
+
       apiResponse = _returnResponse(response);
     } on SocketException {
       throw FetchDataException("No Internet connection");

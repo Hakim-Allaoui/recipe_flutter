@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './app_fonts.dart';
 
-class CustomeButtons {
+class CustomButtons {
   static Widget rectangleButton({
     required String title,
     required Function onTap,
@@ -11,29 +11,39 @@ class CustomeButtons {
     Color buttonColor = Colors.white,
     bool loading = false,
   }) {
-    return SizedBox(
-      height: 48,
-      width: double.infinity,
-      child: TextButton(
-        // textColor: textColor,
-        // color: buttonColor,
-        child: loading
-            ? Center(
-                child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-              ))
-            : Text(
-                title,
-                style: TextStyle(
-                    fontFamily: AppFonts.montserrat,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-        onPressed: () => onTap,
-        // shape: RoundedRectangleBorder(
-        //   side: BorderSide(color: borderColor, width: 1),
-        //   borderRadius: BorderRadius.circular(24.0),
-        // ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24.0),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24.0),
+            color: buttonColor,
+            border: Border.all(color: borderColor, width: 1)),
+        child: SizedBox(
+          height: 48,
+          width: double.infinity,
+          child: TextButton(
+            // textColor: textColor,
+            // color: buttonColor,
+            child: loading
+                ? Center(
+                    child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                  ))
+                : Text(
+                    title,
+                    style: TextStyle(
+                        color: textColor,
+                        fontFamily: AppFonts.montserrat,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+            onPressed: () => onTap,
+            // shape: RoundedRectangleBorder(
+            //   side: BorderSide(color: borderColor, width: 1),
+            //   borderRadius: BorderRadius.circular(24.0),
+            // ),
+          ),
+        ),
       ),
     );
   }

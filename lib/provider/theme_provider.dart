@@ -7,6 +7,7 @@ final ThemeData lightTheme = ThemeData(
   fontFamily: AppFonts.montserrat,
   brightness: Brightness.light,
   primaryColor: AppColor.lightPrimaryColor,
+  useMaterial3: true,
   textTheme: TextTheme(
     titleLarge: TextStyle(
       color: AppColor.lightTitleColor,
@@ -30,6 +31,7 @@ final ThemeData darkTheme = ThemeData(
   fontFamily: AppFonts.montserrat,
   brightness: Brightness.dark,
   primaryColor: AppColor.darkPrimaryColor,
+  useMaterial3: true,
   textTheme: TextTheme(
     titleLarge: TextStyle(
       color: AppColor.darkTitleColor,

@@ -52,14 +52,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     _isInit = false;
 
     super.didChangeDependencies();
- if(Provider.of<AuthProvider>(context).getScreenIsModel == true){
+    if (Provider.of<AuthProvider>(context).getScreenIsModel == true) {
       return;
     }
-      if (_scaffoldKey.currentState?.isDrawerOpen == true) {
+    if (_scaffoldKey.currentState?.isDrawerOpen == true) {
       print(" ================ ${_scaffoldKey.currentState?.isDrawerOpen}");
       Provider.of<AuthProvider>(context).setAdmobStatus = false;
-    }
-    else if (_scaffoldKey.currentState?.isDrawerOpen == false){
+    } else if (_scaffoldKey.currentState?.isDrawerOpen == false) {
       Provider.of<AuthProvider>(context).setAdmobStatus = true;
     }
   }
@@ -71,7 +70,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-     final FavoriteScreen args = ModalRoute.of(context)!.settings.arguments as FavoriteScreen;
+    final FavoriteScreen args =
+        ModalRoute.of(context)!.settings.arguments as FavoriteScreen;
     print(" -------------------------------- ${args.isFromDrawer ?? false}");
 
     List<RecipeItem> recipes =
@@ -81,7 +81,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(StaticString.favourite),
-        actions: <Widget>[
+        actions: [
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
@@ -95,16 +95,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       ),
       drawer: AppDrawer(),
       body: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : 
-              
-              Column(
-                children: <Widget>[
-                  Expanded(child:  RecipesGrid(recipes, showFavorite: false)),
-                  // GoogleAdmob()
-                ],
-              )
-              
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Expanded(child: RecipesGrid(recipes, showFavorite: false)),
+                // GoogleAdmob(),
+              ],
+            ),
     );
   }
 }

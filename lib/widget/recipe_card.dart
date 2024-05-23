@@ -9,6 +9,7 @@ class RecipeCard extends StatelessWidget {
   final RecipeItem recipe;
   final int index;
   final bool showFavorite;
+  final VoidCallback? onTap;
 
   // final SelectedRecipe selectedRecipe;
   // final MainModel model;
@@ -17,6 +18,7 @@ class RecipeCard extends StatelessWidget {
     required this.recipe,
     required this.index,
     this.showFavorite = false,
+    this.onTap,
     // required this.selectedRecipe,
     // required this.model
   });
@@ -73,7 +75,6 @@ class RecipeCard extends StatelessWidget {
                     mini: true,
                     // elevation: 0,
                     backgroundColor: Colors.white,
-
                     child: Icon(
                       Icons.favorite,
                       color: Theme.of(context).colorScheme.secondary,
@@ -87,11 +88,14 @@ class RecipeCard extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () async {
+                  if(onTap != null) {
+                    onTap!();
+                  }
                   final result = await Navigator.of(context).pushNamed(
                     RecipeDetailScreen.routeName,
                     arguments: recipe,
                   );
-                  showHero = result != null ;//? result : true;
+                  showHero = result != null; //? result : true;
                   // GoogleAddmob.myBanner = null;
                 },
               ),

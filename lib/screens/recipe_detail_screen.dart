@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:recipe_flutter_provider/provider/auth.dart';
 import 'package:recipe_flutter_provider/provider/theme_provider.dart';
+import 'package:recipe_flutter_provider/screens/login_screen.dart';
 import '../widget/custom_image.dart';
 import 'package:share/share.dart';
 
@@ -28,6 +29,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var top = 0.0;
   bool _isLoading = false;
+  bool _isRecipeLoading = false;
 
   bool get isShrink {
     return top < (84);
@@ -35,6 +37,8 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
 
   AnimationController? animationController;
   Animation<double>? animation;
+
+  RecipeItem? recipe;
 
   @override
   void initState() {
@@ -53,58 +57,79 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (ModalRoute.of(context)!.settings.arguments != null &&
+        ModalRoute.of(context)!.settings.arguments is RecipeItem) {
+      recipe = ModalRoute.of(context)!.settings.arguments as RecipeItem;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final RecipeItem recipe =
-        ModalRoute.of(context)!.settings.arguments as RecipeItem;
+    // check if argument is RecipeItem
     ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       body: SafeArea(
-        child: NestedScrollView(
-            headerSliverBuilder: (ctx, scrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  iconTheme: IconThemeData(
-                      color: scrolled
-                          ? Theme.of(context).textTheme.titleLarge!.color
-                          : Colors.white),
-                  actions: <Widget>[
-                    _buildShareButton(recipe.shareUrl),
-                    _buildFavButton(recipe),
-                  ],
-                  expandedHeight: 200,
-                  floating: true,
-                  pinned: true,
-                  flexibleSpace: _buildFlexibleTitleBar(recipe),
-                )
-              ];
-            },
-            body: AnimatedBuilder(
-              animation: animationController!,
-              builder: (context, child) {
-                return FadeTransition(
-                  opacity: animation!,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                          child:
-                              SingleChildScrollView(child: _buildBody(recipe))),
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 250),
-                        height:
-                            Provider.of<AuthProvider>(context).getAdmobStatus
+        child: recipe == null
+            ? Center(
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : NestedScrollView(
+                headerSliverBuilder: (ctx, scrolled) {
+                  return [
+                    SliverAppBar(
+                      iconTheme: IconThemeData(
+                          color: scrolled
+                              ? Theme.of(context).textTheme.titleLarge!.color
+                              : Colors.white),
+                      actions: [
+                        // _buildShareButton(recipe.shareUrl),
+                        _buildFavButton(recipe!),
+                      ],
+                      expandedHeight: 200,
+                      floating: true,
+                      pinned: true,
+                      flexibleSpace: _buildFlexibleTitleBar(recipe!),
+                    )
+                  ];
+                },
+                body: AnimatedBuilder(
+                  animation: animationController!,
+                  builder: (context, child) {
+                    return FadeTransition(
+                      opacity: animation!,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                                child: _buildBody(recipe!)),
+                          ),
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 250),
+                            height: Provider.of<AuthProvider>(context)
+                                    .getAdmobStatus
                                 ? 50.0
                                 : 0.0,
-                        width: double.infinity,
-                        color: themeNotifier.getTheme() == lightTheme
-                            ? Colors.white
-                            : Colors.black,
-                      )
-                    ],
-                  ),
-                );
-              },
-            )),
+                            width: double.infinity,
+                            color: themeNotifier.getTheme() == lightTheme
+                                ? Colors.white
+                                : Colors.black,
+                            // child: GoogleAdmob(),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
       ),
     );
   }
@@ -118,6 +143,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
         elevation: 0,
         backgroundColor: Colors.white,
         onPressed: () => Share.share(shareUrl),
+        shape: CircleBorder(),
         child: Icon(
           Icons.share,
           color: Theme.of(context).colorScheme.secondary,
@@ -136,7 +162,11 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
             heroTag: null,
             mini: true,
             elevation: 0.0,
+            shape: CircleBorder(),
             onPressed: () async {
+              Navigator.of(context)
+                  .pushNamed(LoginScreen.routeName, arguments: true);
+              return;
               if (!_isLoading) {
                 bool isMarkedAsFav = false;
                 final bool oldSatatus = recipe.isBookmark;
@@ -216,7 +246,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
           title: _buildTitle(title: recipe.recipeName),
           background: Stack(
             fit: StackFit.expand,
-            children: <Widget>[
+            children: [
               !isShrink
                   ? Hero(
                       tag: recipe.recipeId,
@@ -276,17 +306,17 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
   }
 
   Widget _buildBody(RecipeItem recipe) {
-    return recipe.recipesImageUrl.length > 1
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _buildRecipeImageGrid(recipe.recipesImageUrl),
-              _buildIntro(recipe), // Intro...
-              _buildIngredient(recipe), //Ingridients...
-              _buildInstruction(recipe),
-            ],
-          )
-        : Container();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        recipe.recipesImageUrl.length > 1
+            ? _buildRecipeImageGrid(recipe.recipesImageUrl)
+            : Container(),
+        _buildIntro(recipe), // Intro...
+        _buildIngredient(recipe), //Ingridients...
+        _buildInstruction(recipe),
+      ],
+    );
   }
 
   Widget _buildRecipeImageGrid(List<String> urls) {
@@ -360,7 +390,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
       padding: EdgeInsets.symmetric(vertical: 10),
       margin: EdgeInsets.all(10),
       child: Column(
-        children: <Widget>[
+        children: [
           _buildSectionTitle(StaticString.intro), //Intro
           _buildDivider(),
           Container(
@@ -369,10 +399,8 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
             child: CustomText(
               align: TextAlign.start,
               txtTitle: recipe.summary,
-              txtColor: Theme.of(context)!
-                  .textTheme
-                  .titleLarge!
-                  .color!, // Colors.black87,
+              txtColor: Theme.of(context)!.textTheme.titleLarge!.color!,
+              // Colors.black87,
               txtFontName: AppFonts.montserrat,
               txtFontStyle: FontWeight.w500,
               txtSize: 15,
@@ -385,7 +413,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
+              children: [
                 _buildIntroButton(
                   icon: Icons.timer,
                   title: recipe.recipesTime,
@@ -412,9 +440,13 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
     Function? onTap,
   }) {
     return InkWell(
-      onTap: () => onTap!,
+      onTap: () {
+        if (onTap != null) {
+          onTap();
+        }
+      },
       child: Column(
-        children: <Widget>[
+        children: [
           Icon(
             icon,
             color: Theme.of(context).textTheme.titleSmall!.color,
@@ -439,7 +471,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
       padding: EdgeInsets.symmetric(vertical: 10),
       decoration: cardDecoration(context: context),
       child: Column(
-        children: <Widget>[
+        children: [
           _buildSectionTitle(StaticString.ingridient),
           _buildDivider(),
           ListView.builder(
@@ -474,7 +506,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           _buildSectionTitle(StaticString.insructions),
           _buildDivider(),
           Container(
@@ -505,8 +537,8 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
       child: CustomText(
         align: TextAlign.start,
         txtTitle: title,
-        txtColor:
-            Theme.of(context).textTheme.titleLarge!.color!, // Colors.black,
+        txtColor: Theme.of(context).textTheme.titleLarge!.color!,
+        // Colors.black,
         txtFontName: AppFonts.montserrat,
         txtFontStyle: FontWeight.w500,
         txtSize: 22,
@@ -516,7 +548,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
 
   Widget _buildDirectionTile(String title) {
     return Stack(
-      children: <Widget>[
+      children: [
         Padding(
           padding: EdgeInsets.only(top: 5.0),
           child: Image.asset(

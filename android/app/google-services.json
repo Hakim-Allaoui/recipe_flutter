@@ -12,7 +12,20 @@
           "package_name": "com.appstonelab.myrecipes"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "549040988255-v5rah16v72u73177n8jhvirl1f4hvh9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appstonelab.myrecipes",
+            "certificate_hash": "80a8f9013ee2b806442f5e3c4e6cd3adcf0e7333"
+          }
+        },
+        {
+          "client_id": "549040988255-gjtkk7943eclcjrc7cc1sp8qv6i93mdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCHwFFFF8jeyJ2_quJuDd1emdwKIqt5U4s"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549040988255-gjtkk7943eclcjrc7cc1sp8qv6i93mdf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "549040988255-2l3h3ge33ofioeokh55a95lftif6rn2j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appstonelab.myrecipes"
+              }
+            }
+          ]
         }
       }
     }

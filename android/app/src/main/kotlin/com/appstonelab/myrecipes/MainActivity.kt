@@ -1,4 +1,4 @@
-package com.appstonelab.myrecipes
+package com.myrecipes.app
 
 import io.flutter.embedding.android.FlutterActivity
 

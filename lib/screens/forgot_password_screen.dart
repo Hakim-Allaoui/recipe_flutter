@@ -111,7 +111,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               SizedBox(height: 30),
               _buildEmailFormfield(),
               SizedBox(height: 30),
-              CustomeButtons.rectangleButton(
+              CustomButtons.rectangleButton(
                 onTap: _submit,
                 title: StaticString.submit.toUpperCase(),
                 buttonColor: Theme.of(context).buttonTheme.colorScheme!.background,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Recipe</string>
+    <string name="app_name">My Recipes app</string>
     <string name="facebook_app_id">380297632667993</string>
     <string name="fb_login_protocol_scheme">fb380297632667993</string>
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_flutter_provider/widget/google_admob.dart';
 import '../widget/no_recipes.dart';
 
 import '../provider/recipe.dart';
@@ -18,19 +19,26 @@ class RecipesGrid extends StatefulWidget {
 class _RecipesGridState extends State<RecipesGrid> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
 
+  loadInter() async {
+    await AdmobInterstitialHelper.loadAd();
+  }
+
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    loadInter();
   }
 
   @override
   void dispose() {
     super.dispose();
+
   }
 
   @override
@@ -51,6 +59,9 @@ class _RecipesGridState extends State<RecipesGrid> {
                   recipe: widget.recipes[index],
                   index: index,
                   showFavorite: widget.showFavorite,
+                  onTap: () {
+                    AdmobInterstitialHelper.showInterstitialAd();
+                  },
                 ),
               );
             },

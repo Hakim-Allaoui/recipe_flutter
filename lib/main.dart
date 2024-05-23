@@ -27,8 +27,6 @@ void main() async {
 
   await Tools.init();
 
-  MobileAds.instance.initialize();
-
   SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]).then((_) {
     SharedPreferences.getInstance().then((prefs) {
@@ -72,6 +70,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme(),
       home: HomeScreen(false),
+      title: "My Recipes app",
       routes: {
         MainAuthScreen.routeName: (ctx) => MainAuthScreen(),
         LoginScreen.routeName: (ctx) => LoginScreen(),

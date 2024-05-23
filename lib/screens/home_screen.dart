@@ -1,9 +1,12 @@
 // import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_flutter_provider/provider/auth.dart';
+import 'package:recipe_flutter_provider/provider/recipe.dart';
 import 'package:recipe_flutter_provider/provider/theme_provider.dart';
+import 'package:recipe_flutter_provider/screens/recipe_detail_screen.dart';
 import 'package:recipe_flutter_provider/widget/google_admob.dart';
 
 import '../constant/static_string.dart';
@@ -26,9 +29,47 @@ class _HomeScreenState extends State<HomeScreen> {
   ThemeData? themeData;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  RecipeItem? recipe;
+
+  Future<RecipeItem?> fetchRecipeByUrl(String name) async {
+    final recipe = Provider.of<RecipesProvider>(context, listen: false)
+        .getRecipeByUrl(context: context, name: name);
+
+    return recipe;
+  }
+
+  void _handleMessage(RemoteMessage message) async {
+    recipe = await fetchRecipeByUrl(message.data['name']);
+
+    if(recipe != null) {
+      Navigator.of(context).pushReplacementNamed(
+        RecipeDetailScreen.routeName,
+        arguments: recipe,
+      );
+    }
+  }
+
+  // In this example, suppose that all messages contain a data field with the key 'type'.
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
   @override
   void initState() {
     super.initState();
+    setupInteractedMessage();
   }
 
   @override

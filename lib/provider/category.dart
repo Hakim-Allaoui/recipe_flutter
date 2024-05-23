@@ -15,7 +15,7 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> fetchAndSetCategories({required BuildContext context}) async {
     if (categories.length > 0) {
-      notifyListeners();
+      // notifyListeners();
       return;
     }
 

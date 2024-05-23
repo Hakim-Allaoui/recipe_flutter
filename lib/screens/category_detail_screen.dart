@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_flutter_provider/provider/auth.dart';
 import 'package:recipe_flutter_provider/provider/theme_provider.dart';
+import 'package:recipe_flutter_provider/widget/google_admob.dart';
 
 import '../screens/search_screen.dart';
 import '../provider/recipe.dart';
@@ -28,7 +29,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         _isLoading = true;
       });
 
-      final Map<String, String> map = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+      final Map<String, String> map =
+          ModalRoute.of(context)!.settings.arguments as Map<String, String>;
       catId = map['catId'];
       catName = map['catName'];
       await Provider.of<RecipesProvider>(context, listen: false)
@@ -68,22 +70,25 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         child: _isLoading
             ? Center(child: CircularProgressIndicator())
             : Column(
-              children: <Widget>[
-                Expanded(
-                                  child: RecipesGrid(
+                children: <Widget>[
+                  Expanded(
+                    child: RecipesGrid(
                       recipes,
                     ),
-                ),
-            AnimatedContainer(
-            duration: Duration(milliseconds: 250),
-            height: Provider.of<AuthProvider>(context).getAdmobStatus? 50.0 : 0.0 ,
-            width: double.infinity,
-            color: themeNotifier.getTheme() == lightTheme
-                ? Colors.white
-                : Colors.black,
-          )
-              ],
-            ),
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 250),
+                    height: Provider.of<AuthProvider>(context).getAdmobStatus
+                        ? 50.0
+                        : 0.0,
+                    width: double.infinity,
+                    color: themeNotifier.getTheme() == lightTheme
+                        ? Colors.white
+                        : Colors.black,
+                    // child: GoogleAdmob(),
+                  )
+                ],
+              ),
       ),
     );
   }

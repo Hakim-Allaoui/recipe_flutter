@@ -40,6 +40,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   bool get getAdmobStatus {
+    return false;
     print('Admob status in getter $_adMobStatus');
     return _adMobStatus;
   }

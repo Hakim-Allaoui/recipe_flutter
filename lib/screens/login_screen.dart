@@ -158,12 +158,13 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 10),
               _buildPasswordFormField(),
               SizedBox(height: 20),
-              CustomeButtons.rectangleButton(
+              CustomButtons.rectangleButton(
                 onTap: _submit,
                 title: isForSignup
                     ? StaticString.createAccount.toUpperCase()
                     : StaticString.login.toUpperCase(),
-                buttonColor: Theme.of(context).buttonTheme.colorScheme!.background,
+                buttonColor:
+                    Theme.of(context).buttonTheme.colorScheme!.background,
                 loading: _isLoading,
               ),
               SizedBox(height: 10),
@@ -233,7 +234,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _authData['password'] = value;
       },
       obscureText: true,
-      textInputAction: TextInputAction.done, //KeyBoard Done Bttn
+      textInputAction: TextInputAction.done,
+      //KeyBoard Done Bttn
       textFieldType: TextFieldType.Password,
     );
   }

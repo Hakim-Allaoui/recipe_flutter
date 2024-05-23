@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_flutter_provider/screens/home_screen.dart';
 
 import '../constant/custom_dialog.dart';
 import '../api/api_call.dart';
@@ -37,30 +39,35 @@ class RecipesProvider with ChangeNotifier {
       "category_id": catId != null ? catId : ''
     };
 
-    // try {
+    try {
       final responseData = await ApiCall.callService(
           context: context, webApi: API.Recipe, parameter: parameters);
+
       List<RecipeItem> recipeItems = recipeFromJson(responseData).data!;
 
-      _recipesByCategory = recipeItems;
-      //   } catch (error) {
-      // showDialog(
-      //   context: context,
-      //   builder: (context) {
-      //     return CustomDialog(
-      //       title: error is NoInternetException ? 'No Internet!!!' : 'Error!!!',
-      //       buttonText: 'Okay',
-      //       description: error.toString(),
-      //       alertType: error is NoInternetException
-      //           ? CustomDialogType.NoInternet
-      //           : CustomDialogType.Error,
-      //     );
-      //   },
-      // );
-      // throw error;
-    // }
+      if (catId != null) {
+        _recipesByCategory = recipeItems;
+      } else {
+        _recipes = recipeItems;
+      }
 
-    notifyListeners();
+      notifyListeners();
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(
+            title: error is NoInternetException ? 'No Internet!!!' : 'Error!!!',
+            buttonText: 'Okay',
+            description: error.toString(),
+            alertType: error is NoInternetException
+                ? CustomDialogType.NoInternet
+                : CustomDialogType.Error,
+          );
+        },
+      );
+      throw error;
+    }
   }
 
   Future<void> fetchAndSetFavRecipes({required BuildContext context}) async {
@@ -151,11 +158,35 @@ class RecipesProvider with ChangeNotifier {
       return value.recipeId == recipe.recipeId;
     });
   }
+
+  //get recipe by url
+  Future<RecipeItem?> getRecipeByUrl(
+      {required BuildContext context, required String name}) async {
+    Map<String, String> parameters = {
+      "search": name,
+      "offset": '0',
+      "limit": '100',
+      "category_id": ''
+    };
+
+    try {
+      final responseData = await ApiCall.callService(
+          context: context, webApi: API.Recipe, parameter: parameters);
+
+      debugPrint('responsee ${recipeFromJson(responseData).data!.first}');
+
+      return recipeFromJson(responseData).data!.first;
+
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
-//Get Reciep from Json...
+//Get Recipe from Json...
 RecipeResponse recipeFromJson(String str) =>
     RecipeResponse.fromJson(json.decode(str));
+
 RecipeResponse bookmarkRecipeFromJson(String str) =>
     RecipeResponse.fromJsonForBookmark(json.decode(str));
 
@@ -165,7 +196,8 @@ class RecipeResponse {
   List<RecipeItem>? data;
   RecipeItem? bookMarkData;
 
-  RecipeResponse({required this.status,required  this.code, this.data, this.bookMarkData});
+  RecipeResponse(
+      {required this.status, required this.code, this.data, this.bookMarkData});
 
   factory RecipeResponse.fromJson(Map<String, dynamic> json) => RecipeResponse(
         status: json["status"],

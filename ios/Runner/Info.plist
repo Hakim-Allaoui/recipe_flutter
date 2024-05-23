@@ -37,7 +37,7 @@
 	<key>FacebookAppID</key>
 	<string>380297632667993</string>
 	<key>FacebookDisplayName</key>
-	<string>My Recipes Keeper</string>
+	<string>My Recipes app</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

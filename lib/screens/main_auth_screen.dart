@@ -51,7 +51,8 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
     //   // GoogleAddmob.myBanner = null;
     // }
     if (_isInit) {
-      print('main auth arguments ${ModalRoute.of(context)!.settings.arguments}');
+      print(
+          'main auth arguments ${ModalRoute.of(context)!.settings.arguments}');
       if (ModalRoute.of(context)!.settings.arguments != null) {
         _isSkippedLogin = ModalRoute.of(context)!.settings.arguments != null;
       }
@@ -89,7 +90,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
         SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
     return Scaffold(
         body: Stack(
-      children: <Widget>[
+      children: [
         _buildBody(_isApiCall),
         _isSkippedLogin ? _buildCloseButton() : Container(),
       ],
@@ -98,7 +99,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
 
   Widget _buildBody(bool isLoading) {
     return Stack(
-      children: <Widget>[
+      children: [
         Container(
           width: double.infinity,
           height: double.infinity,
@@ -114,7 +115,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
                   width: double.infinity,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
                       Expanded(
                         flex: 1,
                         child: Image.asset(
@@ -128,14 +129,17 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
                             EdgeInsets.only(right: 15.0, left: 15, bottom: 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            CustomeButtons.rectangleButton(
+                          children: [
+                            CustomButtons.rectangleButton(
                                 title: StaticString.login.toUpperCase(),
                                 onTap: () => Navigator.of(context)
                                     .pushNamed(LoginScreen.routeName),
                                 textColor: Colors.white,
                                 borderColor: Colors.transparent,
-                                buttonColor: Theme.of(context).buttonTheme.colorScheme!.background),
+                                buttonColor: Theme.of(context)
+                                    .buttonTheme
+                                    .colorScheme!
+                                    .secondary),
                             SizedBox(height: 20),
                             Text(
                               StaticString.dontHaveAccount,
@@ -146,18 +150,23 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
                               ),
                             ),
                             SizedBox(height: 20),
-                            CustomeButtons.rectangleButton(
+                            CustomButtons.rectangleButton(
                               title: StaticString.signUP.toUpperCase(),
                               onTap: () => Navigator.of(context).pushNamed(
                                   LoginScreen.routeName,
                                   arguments: true),
-                              textColor: Theme.of(context).colorScheme.secondary,
+                              textColor:
+                                  Theme.of(context).colorScheme.secondary,
                               buttonColor: Colors.transparent,
-                              borderColor: Theme.of(context).buttonTheme.colorScheme!.background,
+                              borderColor: Theme.of(context)
+                                  .buttonTheme
+                                  .colorScheme!
+                                  .secondary,
                             ),
                             SizedBox(height: 15),
                             _buildSocialLoginSection(),
-                            // widget.isSkippedLogin ? Container() : SkipButton(context)
+                            !_isSkippedLogin ? Container() : _buildSkipButton(),
+                            SizedBox(height: 15),
                           ],
                         ),
                       ),
@@ -169,6 +178,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
       ],
     );
   }
+
   // Facebook Google Buttons
 
   Widget _buildHorizontalLine() {
@@ -186,12 +196,15 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
     final AppSetting appSetting =
         Provider.of<AuthProvider>(context, listen: false).appSettings;
 
+    appSetting.isGoogleLogin = true;
+    appSetting.isFacebookLogin = true;
+
     return appSetting.isFacebookLogin && appSetting.isGoogleLogin
         ? Column(
-            children: <Widget>[
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+                children: [
                   _buildHorizontalLine(),
                   SizedBox(width: 5),
                   Text(
@@ -204,19 +217,19 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
                   _buildHorizontalLine(),
                 ],
               ),
-              // _buildSocialLoginButtons(appSetting),
+              _buildSocialLoginButtons(appSetting),
               !_isSkippedLogin ? _buildSkipButton() : Container(),
             ],
           )
         : Container();
   }
 
-  /*Widget _buildSocialLoginButtons(AppSetting appSetting) {
+  Widget _buildSocialLoginButtons(AppSetting appSetting) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+      children: [
         appSetting.isFacebookLogin
-            ? CustomeButtons.circularButton(
+            ? CustomButtons.circularButton(
                 IconData(
                   0xe901,
                   fontFamily: AppFonts.customIcon,
@@ -226,26 +239,30 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
                   setState(() {
                     _isLoading = true;
                   });
-                  final facebookLogin = FacebookLogin();
-                  final result = await facebookLogin.logIn(['email']);
+                  // final facebookLogin = FacebookLogin();
+                  // final result = await facebookLogin.logIn(['email']);
+                  final result = 1; //await facebookLogin.logIn(['email']);
 
-                  switch (result.status) {
-                    case FacebookLoginStatus.loggedIn:
-                      var graphResponse = await http.get(
-                          'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.height(200)&access_token=${result.accessToken.token}');
+                  switch (/*result.status*/ result) {
+                    // case FacebookLoginStatus.loggedIn:
+                    case 0:
+                      // var graphResponse = await http.get(
+                      //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.height(200)&access_token=${result.accessToken.token}');
 
-                      var profile = json.decode(graphResponse.body);
+                      // var profile = json.decode(graphResponse.body);
 
-                      print('access token ${result.accessToken.token}');
-                      await singleSignOn(
-                          token: result.accessToken.token,
-                          type: SignOnType.Facebook);
+                      // print('access token ${result.accessToken.token}');
+                      // await singleSignOn(
+                      //     token: result.accessToken.token,
+                      //     type: SignOnType.Facebook);
 
                       break;
-                    case FacebookLoginStatus.cancelledByUser:
+                    // case FacebookLoginStatus.cancelledByUser:
+                    case 1:
                       SharedPreferencesHelper.setLoginStatus(false);
                       break;
-                    case FacebookLoginStatus.error:
+                    // case FacebookLoginStatus.error:
+                    case 2:
                       SharedPreferencesHelper.setLoginStatus(false);
                       break;
                   }
@@ -256,7 +273,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
               )
             : Container(),
         appSetting.isGoogleLogin
-            ? CustomeButtons.circularButton(
+            ? CustomButtons.circularButton(
                 IconData(
                   0xe902,
                   fontFamily: AppFonts.customIcon,
@@ -266,21 +283,21 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
                   setState(() {
                     _isLoading = true;
                   });
-                  final GoogleSignInAccount googleSignInAccount =
-                      await googleSignin.signIn();
-                  final GoogleSignInAuthentication
-                      googleSignInAuthentication =
-                      await googleSignInAccount.authentication;
+                  // final GoogleSignInAccount googleSignInAccount =
+                  //     await googleSignin.signIn();
+                  // final GoogleSignInAuthentication
+                  //     googleSignInAuthentication =
+                  //     await googleSignInAccount.authentication;
 
-                  print(
-                      'accesstoken ${googleSignInAuthentication.accessToken}');
-                  print('idToken ${googleSignInAuthentication.idToken}');
+                  // print(
+                  //     'accesstoken ${googleSignInAuthentication.accessToken}');
+                  // print('idToken ${googleSignInAuthentication.idToken}');
 
-                  await singleSignOn(
-                      token: googleSignInAuthentication.accessToken,
-                      googleIdToken: googleSignInAuthentication.idToken,
-                      type: SignOnType.Google);
-                
+                  // await singleSignOn(
+                  //     token: googleSignInAuthentication.accessToken,
+                  //     googleIdToken: googleSignInAuthentication.idToken,
+                  //     type: SignOnType.Google);
+
                   setState(() {
                     _isLoading = false;
                   });
@@ -289,7 +306,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
             : Container(),
       ],
     );
-  }*/
+  }
 
   Widget _buildSkipButton() {
     return TextButton(
@@ -322,6 +339,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
         icon: Image.asset(
           AppImages.close,
           color: Colors.white,
+          height: 30,
         ),
       ),
     );
